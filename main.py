@@ -1,23 +1,19 @@
 import discord
-from discord.ext import commands
 import os
-from keep_alive import keep_alive  # 追加
+from keep_alive import keep_alive
 
-# Botの設定
-intents = discord.Intents.default()
-intents.message_content = True
-bot = commands.Bot(command_prefix="!", intents=intents)
+client = discord.Client(intents=discord.Intents.default())
 
-@bot.event
+@client.event
 async def on_ready():
-    print(f"Bot is online as {bot.user}")
+    print('ログインしました')
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send("Pong!")
+@client.event
+async def on_message(message):
+    emoji ="👍"
+    await message.add_reaction(emoji)
 
-# サーバーの起動
-keep_alive()  # 追加
-
-# Discordのボットトークンを使って起動
-bot.run(os.getenv("DISCORD_TOKEN"))
+TOKEN = os.getenv("DISCORD_TOKEN")
+# Web サーバの立ち上げ
+keep_alive()
+client.run(TOKEN)
